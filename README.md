@@ -103,3 +103,33 @@ corporate-is/
 | `description` | TextField | Подробное описание |
 | `is_active` | BooleanField | Активно ли объявление |
 | `created_at` | DateTimeField | Дата создания (авто) |
+
+---
+
+## REST API (Lab 2)
+
+После запуска сервера доступен browsable API DRF по адресу http://127.0.0.1:8000/api/
+
+| Эндпоинт | Методы | Описание |
+|----------|--------|----------|
+| `/api/` | GET | Корень API — список всех эндпоинтов |
+| `/api/cities/` | GET, POST | Список городов / создать город |
+| `/api/cities/<id>/` | GET, PATCH, DELETE | Один город |
+| `/api/listings/` | GET, POST | Список объявлений / создать |
+| `/api/listings/<id>/` | GET, PATCH, DELETE | Одно объявление |
+
+### Пример запросов
+
+```bash
+# Получить список объявлений
+curl http://127.0.0.1:8000/api/listings/
+
+# Создать город
+curl -X POST http://127.0.0.1:8000/api/cities/ -H "Content-Type: application/json" -d '{"name": "Новосибирск", "region": "Новосибирская область", "population": 1621000, "is_active": true}'
+
+# Создать объявление
+curl -X POST http://127.0.0.1:8000/api/listings/ -H "Content-Type: application/json" -d '{"title": "Комната у метро", "room_type": "private", "city": 1, "address": "ул. Ленина, 5", "price_per_month": "12000.00", "available_from": "2026-10-01", "is_active": true}'
+
+# Обновить цену
+curl -X PATCH http://127.0.0.1:8000/api/listings/1/ -H "Content-Type: application/json" -d '{"price_per_month": "13500.00"}'
+```
