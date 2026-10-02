@@ -2,11 +2,9 @@
 from .base import *  # noqa: F401,F403
 
 DEBUG = True
-ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", "testserver"]
 
-# Show all SQL queries in console (comment out when not needed)
-# LOGGING["loggers"]["django.db.backends"] = {
-#     "handlers": ["console"],
-#     "level": "DEBUG",
-#     "propagate": False,
-# }
+# Django Debug Toolbar (только в dev-окружении)
+INSTALLED_APPS = list(INSTALLED_APPS) + ["debug_toolbar"]
+MIDDLEWARE = ["debug_toolbar.middleware.DebugToolbarMiddleware"] + list(MIDDLEWARE)
+INTERNAL_IPS = ["127.0.0.1"]
