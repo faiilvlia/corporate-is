@@ -34,7 +34,7 @@ INSTALLED_APPS = [
     'rest_framework',
     # Local apps
     'accounts',
-    'listings',
+    'tours',
 ]
 
 AUTH_USER_MODEL = "accounts.User"
@@ -115,6 +115,6 @@ LOGGING = {
     "root": {"handlers": ["console"], "level": "WARNING"},
     "loggers": {
         "django": {"handlers": ["console"], "level": "INFO", "propagate": False},
-        "listings": {"handlers": ["console"], "level": LOG_LEVEL, "propagate": False},
+        "tours": {"handlers": ["console"], "level": LOG_LEVEL, "propagate": False},
     },
 }

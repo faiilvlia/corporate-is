@@ -4,7 +4,7 @@ from django.urls import include, path
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("api/", include("listings.urls")),
+    path("api/", include("tours.urls")),
 ]
 
 if "debug_toolbar" in settings.INSTALLED_APPS:
