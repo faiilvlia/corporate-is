@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TourHub RU — Design System Showcase (Nothing OS + Awwwards)</title>
+  <link rel="stylesheet" href="../static/css/design-tokens.css">
+  <style>
+    .showcase-section {
+      padding: 60px 0;
+      border-bottom: 1px solid var(--border-hairline);
+    }
+    .token-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 16px;
+      margin-top: 24px;
+    }
+    .swatch-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-sm);
+      padding: 16px;
+    }
+    .swatch-box {
+      height: 64px;
+      border-radius: 4px;
+      margin-bottom: 12px;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .component-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      align-items: center;
+      margin-top: 24px;
+    }
+    .card-preview-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 24px;
+      margin-top: 32px;
+    }
+  </style>
+</head>
+<body class="dot-matrix-bg">
+
+  <!-- Header -->
+  <header style="padding: 40px 0; border-bottom: 1px solid var(--border-hairline);" class="glass-panel">
+    <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
+      <div>
+        <div class="meta-technical" style="color: var(--accent-brand);">// DESIGN SYSTEM SPECIFICATION v1.0</div>
+        <h1 class="title-section" style="margin-top: 8px;">TOURHUB RU 🏔️</h1>
+        <p style="color: var(--text-secondary); margin-top: 4px;">Nothing OS Tech Minimal + Awwwards Editorial Showcase</p>
+      </div>
+      <div>
+        <span class="badge-tech"><span class="badge-dot"></span> LIVE SYSTEM TOKENS</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- Section 1: Colors & Tokens -->
+    <section class="showcase-section">
+      <div class="meta-technical">// 01. COLOR PALETTE & PRIMITIVE TOKENS</div>
+      <h2 class="title-section" style="margin-top: 8px;">Цветовая архитектура</h2>
+      <p style="color: var(--text-secondary);">Монохромная обсидиановая основа с акцентным Nothing Red (#FF2E2E) и природными тонами.</p>
+
+      <div class="token-grid">
+        <div class="swatch-card">
+          <div class="swatch-box" style="background: var(--primitive-obsidian-950);"></div>
+          <div class="font-mono" style="font-size: 13px; font-weight: 700;">Canvas #080809</div>
+          <div style="font-size: 12px; color: var(--text-muted);">--bg-canvas</div>
+        </div>
+        <div class="swatch-card">
+          <div class="swatch-box" style="background: var(--primitive-obsidian-900);"></div>
+          <div class="font-mono" style="font-size: 13px; font-weight: 700;">Surface #0F0F12</div>
+          <div style="font-size: 12px; color: var(--text-muted);">--bg-surface</div>
+        </div>
+        <div class="swatch-card">
+          <div class="swatch-box" style="background: var(--primitive-nothing-red); box-shadow: 0 0 15px var(--primitive-nothing-red-glow);"></div>
+          <div class="font-mono" style="font-size: 13px; font-weight: 700; color: var(--accent-brand);">Nothing Red #FF2E2E</div>
+          <div style="font-size: 12px; color: var(--text-muted);">--accent-brand</div>
+        </div>
+        <div class="swatch-card">
+          <div class="swatch-box" style="background: var(--primitive-glacier-blue);"></div>
+          <div class="font-mono" style="font-size: 13px; font-weight: 700;">Glacier #38BDF8</div>
+          <div style="font-size: 12px; color: var(--text-muted);">--accent-glacier</div>
+        </div>
+        <div class="swatch-card">
+          <div class="swatch-box" style="background: var(--primitive-titanium-50);"></div>
+          <div class="font-mono" style="font-size: 13px; font-weight: 700; color: #111;">Pure White #FFFFFF</div>
+          <div style="font-size: 12px; color: var(--text-muted);">--text-primary</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 2: Buttons & Interactive Elements -->
+    <section class="showcase-section">
+      <div class="meta-technical">// 02. INTERACTION & BUTTON VARIANTS</div>
+      <h2 class="title-section" style="margin-top: 8px;">Компоненты действий (Buttons & Pills)</h2>
+
+      <div class="component-row">
+        <a href="#" class="btn-tour btn-primary">Выбрать маршрут →</a>
+        <a href="#" class="btn-tour btn-accent">Забронировать тур</a>
+        <a href="#" class="btn-tour btn-outline">Подробная программа</a>
+        <span class="badge-tech"><span class="badge-dot"></span> ДЖИП-ТУР</span>
+        <span class="badge-tech"><span class="badge-dot" style="background: var(--primitive-glacier-blue);"></span> АЛТАЙ [51.75° N]</span>
+        <span class="badge-tech"><span class="badge-dot" style="background: var(--primitive-amber-warm);"></span> ГРУППА ДО 8 ЧЕЛ</span>
+      </div>
+    </section>
+
+    <!-- Section 3: Cards & Editorial Layout -->
+    <section class="showcase-section">
+      <div class="meta-technical">// 03. COMPONENT PREVIEW: TOUR CARDS</div>
+      <h2 class="title-section" style="margin-top: 8px;">Карточки авторских туров</h2>
+      <p style="color: var(--text-secondary);">Тактильные карточки с hairline-рамкой, микро-подсветкой и акцентной типографикой.</p>
+
+      <div class="card-preview-grid">
+        <!-- Tour Card 1 -->
+        <div class="tour-card">
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+              <span class="badge-tech"><span class="badge-dot"></span> ДЖИП-ЭКСПЕДИЦИЯ</span>
+              <span class="font-mono" style="color: var(--text-muted); font-size: 12px;">[01]</span>
+            </div>
+            <h3 class="font-display" style="font-size: 22px; font-weight: 600; line-height: 1.25; margin-bottom: 8px;">
+              Золотое кольцо Алтая: от Чемала до Чулышмана
+            </h3>
+            <div class="meta-technical" style="color: var(--accent-glacier); margin-bottom: 16px;">
+              Горный Алтай // 7 дней // 5-12 Ноября
+            </div>
+            <p style="color: var(--text-secondary); font-size: 14px; margin-bottom: 24px;">
+              Экспедиция на подготовленных внедорожниках через перевалы Семинский и Чике-Таман, спуск в каньон Чулышмана и Телецкое озеро.
+            </p>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: flex-end; padding-top: 16px; border-top: 1px solid var(--border-hairline);">
+            <div>
+              <div class="meta-technical" style="font-size: 11px;">СТОИМОСТЬ ТУРА</div>
+              <div class="price-display">48 500<span class="currency">₽</span></div>
+            </div>
+            <a href="#" class="btn-tour btn-accent" style="padding: 8px 16px; font-size: 13px;">Подробнее →</a>
+          </div>
+        </div>
+
+        <!-- Tour Card 2 -->
+        <div class="tour-card">
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+              <span class="badge-tech"><span class="badge-dot" style="background: var(--primitive-glacier-blue);"></span> ФОТОТУР</span>
+              <span class="font-mono" style="color: var(--text-muted); font-size: 12px;">[02]</span>
+            </div>
+            <h3 class="font-display" style="font-size: 22px; font-weight: 600; line-height: 1.25; margin-bottom: 8px;">
+              Ледовая сказка Байкала: торосы и гроты Ольхона
+            </h3>
+            <div class="meta-technical" style="color: var(--accent-glacier); margin-bottom: 16px;">
+              Озеро Байкал // 6 дней // 1-7 Декабря
+            </div>
+            <p style="color: var(--text-secondary); font-size: 14px; margin-bottom: 24px;">
+              Космический прозрачный лед с пузырьками, катание на коньках по зеркальной глади сибирского моря и ночевки на Ольхоне.
+            </p>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: flex-end; padding-top: 16px; border-top: 1px solid var(--border-hairline);">
+            <div>
+              <div class="meta-technical" style="font-size: 11px;">СТОИМОСТЬ ТУРА</div>
+              <div class="price-display">62 000<span class="currency">₽</span></div>
+            </div>
+            <a href="#" class="btn-tour btn-primary" style="padding: 8px 16px; font-size: 13px;">Подробнее →</a>
+          </div>
+        </div>
+
+        <!-- Tour Card 3 -->
+        <div class="tour-card">
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+              <span class="badge-tech"><span class="badge-dot" style="background: var(--primitive-amber-warm);"></span> ЭКСПЕДИЦИЯ</span>
+              <span class="font-mono" style="color: var(--text-muted); font-size: 12px;">[03]</span>
+            </div>
+            <h3 class="font-display" style="font-size: 22px; font-weight: 600; line-height: 1.25; margin-bottom: 8px;">
+              Сокровища Страны Гор: Сулак, Гуниб и Гамсутль
+            </h3>
+            <div class="meta-technical" style="color: var(--accent-glacier); margin-bottom: 16px;">
+              Горный Дагестан // 5 дней // 10-15 Ноября
+            </div>
+            <p style="color: var(--text-secondary); font-size: 14px; margin-bottom: 24px;">
+              Сулакский каньон, прогулка на скоростном катере, подъем в аул-призрак Гамсутль и древняя крепость Нарын-Кала в Дербенте.
+            </p>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: flex-end; padding-top: 16px; border-top: 1px solid var(--border-hairline);">
+            <div>
+              <div class="meta-technical" style="font-size: 11px;">СТОИМОСТЬ ТУРА</div>
+              <div class="price-display">36 500<span class="currency">₽</span></div>
+            </div>
+            <a href="#" class="btn-tour btn-outline" style="padding: 8px 16px; font-size: 13px;">Подробнее →</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer style="padding: 60px 0; margin-top: 60px; border-top: 1px solid var(--border-hairline);" class="glass-panel">
+    <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
+      <div class="meta-technical">
+        TOURHUB RU © 2026 // NOTHING OS TECH MINIMAL SPECIFICATION
+      </div>
+      <div class="font-mono" style="font-size: 12px; color: var(--text-muted);">
+        STATUS: 200 OK // 3-LAYER TOKEN SYSTEM
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
