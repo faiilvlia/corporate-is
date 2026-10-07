@@ -1,0 +1,26 @@
+{% for error in form.non_field_errors %}
+  <div class="alert alert-danger" style="margin-bottom: 16px;">{{ error }}</div>
+{% endfor %}
+
+{% for field in form %}
+  <div style="margin-bottom: 20px;">
+    <label for="{{ field.id_for_label }}" style="display: block; font-size: 13px; font-weight: 600; color: var(--text-secondary); margin-bottom: 8px;">
+      {{ field.label }}
+      {% if field.field.required %}<span style="color: var(--accent-magma);">*</span>{% endif %}
+    </label>
+    
+    {{ field }}
+
+    {% if field.help_text %}
+      <div style="font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); margin-top: 6px;">
+        {{ field.help_text }}
+      </div>
+    {% endif %}
+
+    {% for error in field.errors %}
+      <div style="font-family: var(--font-mono); font-size: 12px; color: var(--accent-magma); margin-top: 6px;">
+        ▲ {{ error }}
+      </div>
+    {% endfor %}
+  </div>
+{% endfor %}

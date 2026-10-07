@@ -1,4 +1,6 @@
+from django.conf import settings
 from django.db import models
+from django.urls import reverse
 
 
 class Destination(models.Model):
@@ -64,3 +66,82 @@ class Tour(models.Model):
     def __str__(self):
         dest_name = self.destination.name if self.destination else "—"
         return f"{self.title} — {dest_name} ({self.price} ₽)"
+
+    def get_absolute_url(self):
+        return reverse("tour_detail", args=[self.pk])
+
+
+class Booking(models.Model):
+    """Экспедиционная заявка / бронирование путешествия."""
+
+    class Status(models.TextChoices):
+        NEW = "new", "Новая"
+        IN_PROGRESS = "in_progress", "В работе"
+        CONFIRMED = "confirmed", "Подтверждена"
+        CANCELLED = "cancelled", "Отменена"
+
+    class Priority(models.TextChoices):
+        LOW = "low", "Низкий"
+        NORMAL = "normal", "Обычный"
+        HIGH = "high", "Высокий (срочный выезд)"
+
+    title = models.CharField("Тема / Маршрут", max_length=200)
+    author = models.CharField("Путешественник", max_length=100)
+    description = models.TextField("Опыт походов и пожелания", blank=True)
+    destination = models.ForeignKey(
+        Destination,
+        verbose_name="Направление",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="bookings",
+    )
+    tour = models.ForeignKey(
+        Tour,
+        verbose_name="Тур",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="bookings",
+    )
+    priority = models.CharField(
+        "Приоритет", max_length=20, choices=Priority.choices, default=Priority.NORMAL
+    )
+    status = models.CharField(
+        "Статус", max_length=20, choices=Status.choices, default=Status.NEW
+    )
+    created_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        verbose_name="Зарегистрировал",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="created_bookings",
+    )
+    assignee = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        verbose_name="Куратор / Старший гид",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="assigned_bookings",
+    )
+    created_at = models.DateTimeField("Создана", auto_now_add=True)
+    updated_at = models.DateTimeField("Изменена", auto_now=True)
+
+    class Meta:
+        verbose_name = "Заявка на экспедицию"
+        verbose_name_plural = "Заявки на экспедиции"
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return f"Заявка #{self.pk}: {self.title}"
+
+    def get_absolute_url(self):
+        return reverse("booking_detail", args=[self.pk])
+
+    def can_be_edited_by(self, user):
+        """Штаб/гиды правят любые заявки, путешественник — только свои и только новые."""
+        if user.has_perm("tours.change_booking"):
+            return True
+        return self.created_by == user and self.status == self.Status.NEW

@@ -1,0 +1,79 @@
+{% extends "tours/base.html" %}
+
+{% block title %}KRAI — Авторские экспедиции и походы по России{% endblock %}
+
+{% block content %}
+<section style="padding: 40px 0 60px; border-bottom: 1px solid var(--border-hairline); margin-bottom: 48px;">
+  <div style="font-family: var(--font-mono); font-size: 11px; color: var(--accent-magma); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 16px;">
+    [01 // EXPEDITION PROGRAM] • ДИКИЕ РУБЕЖИ РОССИИ
+  </div>
+  <h1 style="font-family: var(--font-display); font-size: clamp(2.4rem, 5vw, 4.2rem); font-weight: 800; line-height: 1.1; margin-bottom: 24px; max-width: 900px;">
+    Авторские экспедиции через хребты, вулканы и каньоны.
+  </h1>
+  <p style="font-size: 17px; color: var(--text-secondary); max-width: 650px; margin-bottom: 32px;">
+    Нестандартные маршруты для тех, кто ищет настоящую дикую природу: Горный Алтай, реликтовый лед Байкала, лавовые поля Камчатки и древние аулы Дагестана.
+  </p>
+  <div style="display: flex; gap: 16px;">
+    <a href="{% url 'booking_create' %}" class="btn btn-magma">Подать заявку на участие</a>
+    <a href="{% url 'booking_list' %}" class="btn btn-ghost">Штаб заявок</a>
+  </div>
+</section>
+
+<!-- Filter Navigation -->
+<div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 24px;">
+  <h2 style="font-family: var(--font-display); font-size: 24px; font-weight: 700;">
+    Активные маршруты <span style="font-family: var(--font-mono); font-size: 14px; color: var(--text-muted); font-weight: 400;">({{ tours|length }})</span>
+  </h2>
+  <div style="font-family: var(--font-mono); font-size: 12px; color: var(--text-muted);">
+    [СЕЗОН 2026 // ОТКРЫТ НАБОР]
+  </div>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 24px;">
+  {% for tour in tours %}
+    <article style="background: var(--bg-card); border: 1px solid var(--border-hairline); border-radius: var(--radius-lg); overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease, border-color 0.2s ease;">
+      <div style="padding: 24px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+          <span style="font-family: var(--font-mono); font-size: 11px; color: var(--text-secondary); background: rgba(255, 255, 255, 0.05); padding: 4px 10px; border-radius: var(--radius-pill); border: 1px solid var(--border-hairline); text-transform: uppercase;">
+            {{ tour.destination.name }}
+          </span>
+          <span style="font-family: var(--font-mono); font-size: 11px; color: #FFF; background: var(--accent-magma); padding: 4px 10px; border-radius: var(--radius-pill); font-weight: 600;">
+            {{ tour.duration_days }} ДНЕЙ
+          </span>
+        </div>
+
+        <h3 style="font-family: var(--font-display); font-size: 19px; font-weight: 700; line-height: 1.3; margin-bottom: 12px;">
+          <a href="{{ tour.get_absolute_url }}" style="color: var(--text-primary); text-decoration: none;">
+            {{ tour.title }}
+          </a>
+        </h3>
+
+        <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 20px; line-height: 1.6;">
+          {{ tour.description|truncatewords:22 }}
+        </p>
+
+        <div style="display: flex; gap: 16px; font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); border-top: 1px solid var(--border-hairline); padding-top: 14px;">
+          <div>ТИП: <span style="color: var(--text-secondary);">{{ tour.get_tour_type_display }}</span></div>
+          <div>ГРУППА: <span style="color: var(--text-secondary);">ДО {{ tour.max_group_size }} ЧЕЛ.</span></div>
+        </div>
+      </div>
+
+      <div style="padding: 18px 24px; background: rgba(7, 8, 9, 0.5); border-top: 1px solid var(--border-hairline); display: flex; justify-content: space-between; align-items: center;">
+        <div>
+          <div style="font-family: var(--font-mono); font-size: 10px; color: var(--text-muted); text-transform: uppercase;">Стоимость</div>
+          <div style="font-family: var(--font-display); font-size: 20px; font-weight: 800; color: var(--text-primary);">
+            {{ tour.price|floatformat:0 }} ₽
+          </div>
+        </div>
+        <a href="{% url 'booking_create' %}?tour={{ tour.pk }}" class="btn btn-ghost btn-sm">
+          Забронировать →
+        </a>
+      </div>
+    </article>
+  {% empty %}
+    <div style="grid-column: 1 / -1; padding: 48px; text-align: center; color: var(--text-muted); font-family: var(--font-mono);">
+      Маршруты пока не добавлены
+    </div>
+  {% endfor %}
+</div>
+{% endblock %}

@@ -118,3 +118,8 @@ LOGGING = {
         "tours": {"handlers": ["console"], "level": LOG_LEVEL, "propagate": False},
     },
 }
+
+# Authentication redirects
+LOGIN_URL = "login"
+LOGIN_REDIRECT_URL = "booking_list"
+LOGOUT_REDIRECT_URL = "home"

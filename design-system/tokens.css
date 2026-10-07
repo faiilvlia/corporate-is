@@ -1,0 +1,148 @@
+/* Design Tokens - Auto-generated */
+/* Do not edit directly - modify tokens.json instead */
+
+/* === PRIMITIVES === */
+:root {
+  --primitive-color-obsidian-50: #F9FAFC;
+  --primitive-color-obsidian-100: #F0F2F5;
+  --primitive-color-obsidian-200: #E1E4E8;
+  --primitive-color-obsidian-300: #C4CAD2;
+  --primitive-color-obsidian-400: #9AA3AF;
+  --primitive-color-obsidian-500: #687383;
+  --primitive-color-obsidian-600: #3C4450;
+  --primitive-color-obsidian-700: #262C34;
+  --primitive-color-obsidian-800: #1A1E24;
+  --primitive-color-obsidian-850: #13161A;
+  --primitive-color-obsidian-900: #0D0F12;
+  --primitive-color-obsidian-950: #070809;
+  --primitive-color-travertine-50: #FAF8F5;
+  --primitive-color-travertine-100: #F3EFE7;
+  --primitive-color-travertine-200: #E5DED0;
+  --primitive-color-travertine-300: #D1C7B4;
+  --primitive-color-travertine-500: #A39782;
+  --primitive-color-magma-400: #FA6854;
+  --primitive-color-magma-500: #E24F3A;
+  --primitive-color-magma-600: #C43B27;
+  --primitive-color-magma-700: #9E2918;
+  --primitive-color-taiga-400: #3AA58D;
+  --primitive-color-taiga-500: #2A8772;
+  --primitive-color-taiga-600: #1F6958;
+  --primitive-color-taiga-700: #154C3F;
+  --primitive-color-gold-400: #E5B869;
+  --primitive-color-gold-500: #CCA04E;
+  --primitive-color-alpha-white4: rgba(255, 255, 255, 0.04);
+  --primitive-color-alpha-white7: rgba(255, 255, 255, 0.07);
+  --primitive-color-alpha-white12: rgba(255, 255, 255, 0.12);
+  --primitive-color-alpha-white24: rgba(255, 255, 255, 0.24);
+  --primitive-color-alpha-white60: rgba(255, 255, 255, 0.60);
+  --primitive-color-alpha-black40: rgba(0, 0, 0, 0.40);
+  --primitive-color-alpha-black70: rgba(0, 0, 0, 0.70);
+  --primitive-typography-fontFamily-display: 'Syne', -apple-system, sans-serif;
+  --primitive-typography-fontFamily-body: 'Plus Jakarta Sans', 'Inter', -apple-system, sans-serif;
+  --primitive-typography-fontFamily-mono: 'JetBrains Mono', 'Space Mono', monospace;
+  --primitive-typography-fontSize-2xs: 0.6875rem;
+  --primitive-typography-fontSize-xs: 0.75rem;
+  --primitive-typography-fontSize-sm: 0.8125rem;
+  --primitive-typography-fontSize-base: 0.9375rem;
+  --primitive-typography-fontSize-md: 1.0625rem;
+  --primitive-typography-fontSize-lg: 1.25rem;
+  --primitive-typography-fontSize-xl: 1.625rem;
+  --primitive-typography-fontSize-2xl: 2.25rem;
+  --primitive-typography-fontSize-3xl: 3.25rem;
+  --primitive-typography-fontSize-display: 4.75rem;
+  --primitive-typography-fontWeight-regular: 400;
+  --primitive-typography-fontWeight-medium: 500;
+  --primitive-typography-fontWeight-semibold: 600;
+  --primitive-typography-fontWeight-bold: 700;
+  --primitive-typography-fontWeight-extrabold: 800;
+  --primitive-typography-letterSpacing-tight: -0.03em;
+  --primitive-typography-letterSpacing-normal: 0;
+  --primitive-typography-letterSpacing-wide: 0.06em;
+  --primitive-typography-letterSpacing-widest: 0.14em;
+  --primitive-typography-lineHeight-none: 1;
+  --primitive-typography-lineHeight-tight: 1.15;
+  --primitive-typography-lineHeight-snug: 1.3;
+  --primitive-typography-lineHeight-relaxed: 1.6;
+  --primitive-spacing-0: 0;
+  --primitive-spacing-1: 0.25rem;
+  --primitive-spacing-2: 0.5rem;
+  --primitive-spacing-3: 0.75rem;
+  --primitive-spacing-4: 1rem;
+  --primitive-spacing-5: 1.25rem;
+  --primitive-spacing-6: 1.5rem;
+  --primitive-spacing-8: 2rem;
+  --primitive-spacing-10: 2.5rem;
+  --primitive-spacing-12: 3rem;
+  --primitive-spacing-16: 4rem;
+  --primitive-spacing-20: 5rem;
+  --primitive-spacing-24: 6rem;
+  --primitive-spacing-32: 8rem;
+  --primitive-radius-none: 0px;
+  --primitive-radius-xs: 3px;
+  --primitive-radius-sm: 6px;
+  --primitive-radius-md: 10px;
+  --primitive-radius-lg: 16px;
+  --primitive-radius-xl: 24px;
+  --primitive-radius-full: 9999px;
+  --primitive-shadow-none: none;
+  --primitive-shadow-card: 0 20px 40px -15px rgba(0, 0, 0, 0.7);
+  --primitive-shadow-glowMagma: 0 0 35px -5px rgba(226, 79, 58, 0.35);
+  --primitive-shadow-glowTaiga: 0 0 35px -5px rgba(42, 135, 114, 0.35);
+  --primitive-motion-durationFast: 180ms;
+  --primitive-motion-durationBase: 300ms;
+  --primitive-motion-durationSlow: 600ms;
+  --primitive-motion-easeOutExpo: cubic-bezier(0.16, 1, 0.3, 1);
+  --primitive-motion-easeInOutSmooth: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+/* === SEMANTIC === */
+:root {
+  --color-bgCanvas: #070809;
+  --color-bgSurface: #0D0F12;
+  --color-bgElevated: #13161A;
+  --color-bgCard: #13161A;
+  --color-bgCardHover: #1A1E24;
+  --color-bgGlass: rgba(19, 22, 26, 0.65);
+  --color-textPrimary: #F9FAFC;
+  --color-textSecondary: #9AA3AF;
+  --color-textMuted: #687383;
+  --color-textInverted: #070809;
+  --color-accentPrimary: #E24F3A;
+  --color-accentPrimaryHover: #FA6854;
+  --color-accentNature: #2A8772;
+  --color-accentNatureHover: #3AA58D;
+  --color-accentLuxury: #E5B869;
+  --color-accentTravertine: #F3EFE7;
+  --color-borderHairline: rgba(255, 255, 255, 0.07);
+  --color-borderSubtle: rgba(255, 255, 255, 0.12);
+  --color-borderActive: rgba(255, 255, 255, 0.24);
+  --color-borderAccent: #E24F3A;
+}
+
+/* === COMPONENTS === */
+:root {
+  --button-primaryBg: #F9FAFC;
+  --button-primaryText: #070809;
+  --button-primaryHoverBg: #FAF8F5;
+  --button-accentBg: #E24F3A;
+  --button-accentText: #FFFFFF;
+  --button-ghostBorder: rgba(255, 255, 255, 0.12);
+  --button-ghostHoverBorder: rgba(255, 255, 255, 0.24);
+  --button-ghostText: #F9FAFC;
+  --button-radius: 9999px;
+  --tourCard-bg: #13161A;
+  --tourCard-border: rgba(255, 255, 255, 0.07);
+  --tourCard-hoverBorder: rgba(255, 255, 255, 0.24);
+  --tourCard-radius: 16px;
+  --tourCard-metaFont: 'JetBrains Mono', 'Space Mono', monospace;
+  --badge-bg: rgba(255, 255, 255, 0.07);
+  --badge-border: rgba(255, 255, 255, 0.07);
+  --badge-text: #9AA3AF;
+  --badge-font: 'JetBrains Mono', 'Space Mono', monospace;
+  --badge-radius: 9999px;
+  --input-bg: #0D0F12;
+  --input-border: rgba(255, 255, 255, 0.12);
+  --input-focusBorder: #E24F3A;
+  --input-text: #F9FAFC;
+  --input-radius: 6px;
+}

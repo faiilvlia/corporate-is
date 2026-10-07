@@ -1,0 +1,94 @@
+{% extends "tours/base.html" %}
+
+{% block title %}Штаб заявок — KRAI{% endblock %}
+
+{% block content %}
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+  <div>
+    <div style="font-family: var(--font-mono); font-size: 11px; color: var(--accent-magma); letter-spacing: 0.12em; text-transform: uppercase;">
+      [EXPEDITION HEADQUARTERS]
+    </div>
+    <h1 style="font-family: var(--font-display); font-size: 28px; font-weight: 700;">
+      Экспедиционные заявки
+    </h1>
+  </div>
+  <a href="{% url 'booking_create' %}" class="btn btn-magma">
+    + Новая заявка
+  </a>
+</div>
+
+<!-- Search & Filter Form (GET method) -->
+<form method="get" style="display: grid; grid-template-columns: 2fr 1fr auto; gap: 12px; margin-bottom: 32px; background: var(--bg-surface); padding: 16px; border: 1px solid var(--border-hairline); border-radius: var(--radius-md);">
+  <input class="krai-input" type="search" name="q" value="{{ query }}" placeholder="Поиск по маршруту, участнику или описанию...">
+  
+  <select class="krai-select" name="status">
+    <option value="">Все статусы ({{ bookings|length }})</option>
+    {% for val, label in statuses %}
+      <option value="{{ val }}" {% if val == status %}selected{% endif %}>{{ label }}</option>
+    {% endfor %}
+  </select>
+
+  <button class="btn btn-ghost" type="submit">Найти</button>
+</form>
+
+<!-- Table -->
+<div style="background: var(--bg-card); border: 1px solid var(--border-hairline); border-radius: var(--radius-lg); overflow: hidden;">
+  <table style="width: 100%; border-collapse: collapse; font-size: 14px; text-align: left;">
+    <thead>
+      <tr style="border-bottom: 1px solid var(--border-hairline); font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em;">
+        <th style="padding: 16px 20px;">№</th>
+        <th style="padding: 16px 20px;">Тема / Маршрут</th>
+        <th style="padding: 16px 20px;">Направление</th>
+        <th style="padding: 16px 20px;">Участник</th>
+        <th style="padding: 16px 20px;">Приоритет</th>
+        <th style="padding: 16px 20px;">Статус</th>
+        <th style="padding: 16px 20px;">Куратор / Гид</th>
+        <th style="padding: 16px 20px;">Дата</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for b in bookings %}
+        <tr style="border-bottom: 1px solid var(--border-hairline); transition: background 0.15s ease;">
+          <td style="padding: 16px 20px; font-family: var(--font-mono); color: var(--text-muted);">
+            #{{ b.pk }}
+          </td>
+          <td style="padding: 16px 20px; font-weight: 600;">
+            <a href="{{ b.get_absolute_url }}" style="color: var(--text-primary); text-decoration: none;">
+              {{ b.title }}
+            </a>
+          </td>
+          <td style="padding: 16px 20px; color: var(--text-secondary);">
+            {{ b.destination.name|default:"—" }}
+          </td>
+          <td style="padding: 16px 20px; color: var(--text-secondary);">
+            {{ b.author }}
+          </td>
+          <td style="padding: 16px 20px; font-family: var(--font-mono); font-size: 12px;">
+            {{ b.get_priority_display }}
+          </td>
+          <td style="padding: 16px 20px;">
+            <span style="font-family: var(--font-mono); font-size: 11px; padding: 4px 10px; border-radius: var(--radius-pill); 
+              {% if b.status == 'new' %}background: rgba(226, 79, 58, 0.15); color: var(--accent-magma); border: 1px solid rgba(226, 79, 58, 0.4);
+              {% elif b.status == 'in_progress' %}background: rgba(229, 184, 105, 0.15); color: #E5B869; border: 1px solid rgba(229, 184, 105, 0.4);
+              {% else %}background: rgba(42, 135, 114, 0.15); color: #48C7A8; border: 1px solid rgba(42, 135, 114, 0.4);{% endif %}">
+              {{ b.get_status_display }}
+            </span>
+          </td>
+          <td style="padding: 16px 20px; font-family: var(--font-mono); font-size: 12px; color: var(--text-secondary);">
+            {% if b.assignee %}{{ b.assignee.get_full_name|default:b.assignee.username }}{% else %}— не назначен —{% endif %}
+          </td>
+          <td style="padding: 16px 20px; font-family: var(--font-mono); font-size: 12px; color: var(--text-muted);">
+            {{ b.created_at|date:"d.m.Y H:i" }}
+          </td>
+        </tr>
+      {% empty %}
+        <tr>
+          <td colspan="8" style="padding: 48px; text-align: center; color: var(--text-muted); font-family: var(--font-mono);">
+            Заявок не обнаружено
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

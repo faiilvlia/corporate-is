@@ -1,0 +1,64 @@
+{% extends "tours/base.html" %}
+
+{% block title %}{{ tour.title }} — KRAI{% endblock %}
+
+{% block content %}
+<div style="margin-bottom: 24px;">
+  <a href="{% url 'home' %}" style="font-family: var(--font-mono); font-size: 12px; color: var(--text-muted); text-decoration: none;">
+    ← Все маршруты
+  </a>
+</div>
+
+<div style="display: grid; grid-template-columns: 2fr 1fr; gap: 40px; align-items: start;">
+  <div>
+    <div style="font-family: var(--font-mono); font-size: 11px; color: var(--accent-magma); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 12px;">
+      [НАПРАВЛЕНИЕ: {{ tour.destination.name|upper }}] // [{{ tour.duration_days }} ДНЕЙ]
+    </div>
+    <h1 style="font-family: var(--font-display); font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; line-height: 1.2; margin-bottom: 24px;">
+      {{ tour.title }}
+    </h1>
+
+    <div style="background: var(--bg-card); border: 1px solid var(--border-hairline); border-radius: var(--radius-lg); padding: 32px; margin-bottom: 32px;">
+      <h2 style="font-family: var(--font-display); font-size: 18px; font-weight: 700; margin-bottom: 16px;">
+        Программа экспедиции
+      </h2>
+      <p style="font-size: 15px; color: var(--text-secondary); line-height: 1.8; white-space: pre-line;">
+        {{ tour.description }}
+      </p>
+    </div>
+  </div>
+
+  <!-- Sidebar Booking Box -->
+  <aside style="background: var(--bg-surface); border: 1px solid var(--border-hairline); border-radius: var(--radius-lg); padding: 28px; position: sticky; top: 100px;">
+    <div style="font-family: var(--font-mono); font-size: 10px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 4px;">
+      Стоимость участия
+    </div>
+    <div style="font-family: var(--font-display); font-size: 32px; font-weight: 800; color: var(--text-primary); margin-bottom: 24px;">
+      {{ tour.price|floatformat:0 }} ₽
+    </div>
+
+    <div style="font-family: var(--font-mono); font-size: 12px; display: flex; flex-direction: column; gap: 12px; margin-bottom: 28px; border-top: 1px solid var(--border-hairline); padding-top: 16px;">
+      <div style="display: flex; justify-content: space-between;">
+        <span style="color: var(--text-muted);">Длительность:</span>
+        <span>{{ tour.duration_days }} дней</span>
+      </div>
+      <div style="display: flex; justify-content: space-between;">
+        <span style="color: var(--text-muted);">Категория:</span>
+        <span>{{ tour.get_tour_type_display }}</span>
+      </div>
+      <div style="display: flex; justify-content: space-between;">
+        <span style="color: var(--text-muted);">Дата старта:</span>
+        <span>{{ tour.start_date|date:"d.m.Y" }}</span>
+      </div>
+      <div style="display: flex; justify-content: space-between;">
+        <span style="color: var(--text-muted);">Группа:</span>
+        <span>до {{ tour.max_group_size }} человек</span>
+      </div>
+    </div>
+
+    <a href="{% url 'booking_create' %}?tour={{ tour.pk }}" class="btn btn-magma" style="width: 100%;">
+      Подать заявку на этот тур
+    </a>
+  </aside>
+</div>
+{% endblock %}

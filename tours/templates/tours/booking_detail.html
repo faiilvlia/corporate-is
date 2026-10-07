@@ -1,0 +1,99 @@
+{% extends "tours/base.html" %}
+
+{% block title %}Заявка #{{ booking.pk }} — KRAI{% endblock %}
+
+{% block content %}
+<div style="margin-bottom: 24px;">
+  <a href="{% url 'booking_list' %}" style="font-family: var(--font-mono); font-size: 12px; color: var(--text-muted); text-decoration: none;">
+    ← Ко всем заявкам
+  </a>
+</div>
+
+<div style="display: grid; grid-template-columns: 2fr 1fr; gap: 40px; align-items: start;">
+  <div>
+    <div style="font-family: var(--font-mono); font-size: 11px; color: var(--accent-magma); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 8px;">
+      [ЭКСПЕДИЦИОННЫЙ ПАСПОРТ ЗАЯВКИ #{{ booking.pk }}]
+    </div>
+    <h1 style="font-family: var(--font-display); font-size: 28px; font-weight: 700; margin-bottom: 24px;">
+      {{ booking.title }}
+    </h1>
+
+    <div style="background: var(--bg-card); border: 1px solid var(--border-hairline); border-radius: var(--radius-lg); padding: 28px; margin-bottom: 32px;">
+      <div style="display: grid; grid-template-columns: 160px 1fr; row-gap: 16px; font-size: 14px;">
+        <div style="color: var(--text-muted); font-family: var(--font-mono); font-size: 12px;">Статус:</div>
+        <div>
+          <span style="font-family: var(--font-mono); font-size: 11px; padding: 4px 10px; border-radius: var(--radius-pill);
+            {% if booking.status == 'new' %}background: rgba(226, 79, 58, 0.15); color: var(--accent-magma); border: 1px solid rgba(226, 79, 58, 0.4);
+            {% elif booking.status == 'in_progress' %}background: rgba(229, 184, 105, 0.15); color: #E5B869; border: 1px solid rgba(229, 184, 105, 0.4);
+            {% else %}background: rgba(42, 135, 114, 0.15); color: #48C7A8; border: 1px solid rgba(42, 135, 114, 0.4);{% endif %}">
+            {{ booking.get_status_display }}
+          </span>
+        </div>
+
+        <div style="color: var(--text-muted); font-family: var(--font-mono); font-size: 12px;">Приоритет:</div>
+        <div>{{ booking.get_priority_display }}</div>
+
+        <div style="color: var(--text-muted); font-family: var(--font-mono); font-size: 12px;">Направление:</div>
+        <div>{{ booking.destination.name|default:"— не указано —" }}</div>
+
+        {% if booking.tour %}
+          <div style="color: var(--text-muted); font-family: var(--font-mono); font-size: 12px;">Выбранный тур:</div>
+          <div><a href="{{ booking.tour.get_absolute_url }}" style="color: var(--accent-magma);">{{ booking.tour.title }}</a></div>
+        {% endif %}
+
+        <div style="color: var(--text-muted); font-family: var(--font-mono); font-size: 12px;">Путешественник:</div>
+        <div>{{ booking.author }}</div>
+
+        <div style="color: var(--text-muted); font-family: var(--font-mono); font-size: 12px;">Зарегистрировал:</div>
+        <div>{% if booking.created_by %}{{ booking.created_by.get_full_name|default:booking.created_by.username }}{% else %}—{% endif %}</div>
+
+        <div style="color: var(--text-muted); font-family: var(--font-mono); font-size: 12px;">Куратор / Гид:</div>
+        <div>{% if booking.assignee %}{{ booking.assignee.get_full_name|default:booking.assignee.username }}{% else %}— не назначен —{% endif %}</div>
+
+        <div style="color: var(--text-muted); font-family: var(--font-mono); font-size: 12px;">Создана:</div>
+        <div style="font-family: var(--font-mono); font-size: 12px; color: var(--text-secondary);">{{ booking.created_at|date:"d.m.Y H:i" }}</div>
+      </div>
+
+      <div style="border-top: 1px solid var(--border-hairline); margin-top: 24px; padding-top: 20px;">
+        <div style="font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px;">
+          Опыт походов и пожелания
+        </div>
+        <p style="font-size: 14px; color: var(--text-secondary); line-height: 1.7; white-space: pre-line;">
+          {{ booking.description|default:"— нет дополнительного описания —" }}
+        </p>
+      </div>
+
+      {% if can_edit %}
+        <div style="margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--border-hairline);">
+          <a href="{% url 'booking_update' booking.pk %}" class="btn btn-ghost btn-sm">
+            Редактировать заявку
+          </a>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Sidebar: Guide Processing Panel -->
+  {% if process_form %}
+    <aside style="background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 24px;">
+      <div style="font-family: var(--font-mono); font-size: 11px; color: var(--accent-magma); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px;">
+        [ШТАБНОЙ КОНТРОЛЬ]
+      </div>
+      <h2 style="font-family: var(--font-display); font-size: 18px; font-weight: 700; margin-bottom: 16px;">
+        Обработка заявки
+      </h2>
+      <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 20px;">
+        Назначьте старшего гида экспедиции и переведите статус заявки.
+      </p>
+
+      <form method="post" action="{% url 'booking_process' booking.pk %}">
+        {% csrf_token %}
+        {% include "tours/_form_fields.html" with form=process_form %}
+        <button type="submit" class="btn btn-magma" style="width: 100%; margin-top: 8px;">
+          Применить изменения
+        </button>
+      </form>
+    </aside>
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}KRAI — Экспедиции по диким краям России{% endblock %}</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    /* TERRA EXPEDITION / KRAI DESIGN TOKENS */
+    :root {
+      --bg-canvas: #070809;
+      --bg-surface: #0D0F12;
+      --bg-card: #13161A;
+      --bg-card-hover: #1A1E24;
+      --bg-glass: rgba(13, 15, 18, 0.75);
+      
+      --text-primary: #F9FAFC;
+      --text-secondary: #9AA3AF;
+      --text-muted: #687383;
+      
+      --accent-magma: #E24F3A;
+      --accent-magma-hover: #FA6854;
+      --accent-taiga: #2A8772;
+      --accent-travertine: #F3EFE7;
+      
+      --border-hairline: rgba(255, 255, 255, 0.08);
+      --border-subtle: rgba(255, 255, 255, 0.14);
+      --border-active: rgba(255, 255, 255, 0.28);
+      
+      --font-display: 'Syne', -apple-system, sans-serif;
+      --font-body: 'Plus Jakarta Sans', -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 16px;
+      --radius-pill: 9999px;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-canvas);
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      font-size: 15px;
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Subtle background grid */
+    .bg-grid {
+      position: fixed;
+      inset: 0;
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+      background-size: 64px 64px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Header Nav */
+    .nav-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--bg-glass);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border-hairline);
+      padding: 16px 0;
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--text-primary);
+    }
+
+    .brand-symbol {
+      width: 26px;
+      height: 26px;
+      background: var(--accent-magma);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      font-size: 13px;
+      color: #FFF;
+    }
+
+    .brand-name {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .nav-link {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .nav-link:hover, .nav-link.active {
+      color: var(--text-primary);
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .user-pill {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--text-secondary);
+      padding: 6px 12px;
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-pill);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .user-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent-taiga);
+      box-shadow: 0 0 8px var(--accent-taiga);
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-family: var(--font-body);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 10px 20px;
+      border-radius: var(--radius-pill);
+      text-decoration: none;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .btn-magma {
+      background: var(--accent-magma);
+      color: #FFF;
+    }
+
+    .btn-magma:hover {
+      background: var(--accent-magma-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 0 20px -3px rgba(226, 79, 58, 0.4);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--text-primary);
+      border-color: var(--border-hairline);
+    }
+
+    .btn-ghost:hover {
+      border-color: var(--border-active);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .btn-sm {
+      padding: 6px 14px;
+      font-size: 12px;
+    }
+
+    /* Flash Messages */
+    .alerts-wrap {
+      margin-top: 24px;
+    }
+
+    .alert {
+      padding: 12px 18px;
+      border-radius: var(--radius-md);
+      font-size: 14px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border: 1px solid transparent;
+    }
+
+    .alert-success {
+      background: rgba(42, 135, 114, 0.15);
+      border-color: rgba(42, 135, 114, 0.4);
+      color: #48C7A8;
+    }
+
+    .alert-danger, .alert-error {
+      background: rgba(226, 79, 58, 0.15);
+      border-color: rgba(226, 79, 58, 0.4);
+      color: #FA6854;
+    }
+
+    .alert-info {
+      background: rgba(255, 255, 255, 0.06);
+      border-color: var(--border-subtle);
+      color: var(--text-primary);
+    }
+
+    /* Main body */
+    main {
+      flex: 1;
+      padding: 40px 0 80px;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border-hairline);
+      padding: 32px 0;
+      margin-top: auto;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    /* Form Fields Global */
+    .krai-input, .krai-select, .krai-textarea {
+      width: 100%;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-sm);
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      font-size: 14px;
+      padding: 12px 16px;
+      outline: none;
+      transition: border-color 0.2s ease;
+    }
+
+    .krai-input:focus, .krai-select:focus, .krai-textarea:focus {
+      border-color: var(--accent-magma);
+      box-shadow: 0 0 0 2px rgba(226, 79, 58, 0.15);
+    }
+
+    .krai-select option {
+      background: var(--bg-card);
+      color: var(--text-primary);
+    }
+  </style>
+  {% block extra_head %}{% endblock %}
+</head>
+<body>
+
+  <div class="bg-grid"></div>
+
+  <!-- Header -->
+  <header class="nav-header">
+    <div class="container nav-inner">
+      <div class="nav-left">
+        <a href="{% url 'home' %}" class="brand">
+          <div class="brand-symbol">K</div>
+          <div class="brand-name">KRAI</div>
+        </a>
+        <nav class="nav-links">
+          <a href="{% url 'home' %}" class="nav-link">Экспедиции</a>
+          <a href="{% url 'booking_list' %}" class="nav-link">Штаб заявок</a>
+          <a href="{% url 'booking_create' %}" class="nav-link">+ Подать заявку</a>
+        </nav>
+      </div>
+
+      <div class="nav-right">
+        {% if user.is_authenticated %}
+          <div class="user-pill">
+            <span class="user-dot"></span>
+            <span>{{ user.get_full_name|default:user.username }}</span>
+          </div>
+          <form method="post" action="{% url 'logout' %}" style="display: inline;">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-ghost btn-sm">Выйти</button>
+          </form>
+        {% else %}
+          <a href="{% url 'login' %}" class="btn btn-ghost btn-sm">Войти в штаб</a>
+          <a href="{% url 'booking_create' %}" class="btn btn-magma btn-sm">Оставить заявку</a>
+        {% endif %}
+      </div>
+    </div>
+  </header>
+
+  <!-- Alerts -->
+  <div class="container alerts-wrap">
+    {% for message in messages %}
+      <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %}">
+        <span>{{ message }}</span>
+      </div>
+    {% endfor %}
+  </div>
+
+  <!-- Content -->
+  <main class="container">
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container footer-inner">
+      <div>KRAI EXPEDITIONS © 2026 // [53°13'N 86°56'E] // ДИКИЕ КРАЯ РОССИИ</div>
+      <div>DJANGO INFRASTRUCTURE // DESIGN SYSTEM: TERRA</div>
+    </div>
+  </footer>
+
+</body>
+</html>
