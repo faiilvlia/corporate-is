@@ -51,6 +51,10 @@ function App() {
     setFilters((prev) => ({ ...prev, [name]: value }))
   }
 
+  function resetFilters() {
+    setFilters(initialFilters)
+  }
+
   function addToCart(productId) {
     setCartItems((prev) => {
       const existing = prev.find((item) => item.productId === productId)
@@ -138,12 +142,16 @@ function App() {
             filters={filters}
             categories={categories}
             onChange={updateFilter}
-            onReset={() => setFilters(initialFilters)}
+            onReset={resetFilters}
           />
+          <p className="catalog-count">
+            Найдено {visibleProducts.length} из {products.length}
+          </p>
           <ProductList
             products={visibleProducts}
             cartItems={cartItems}
             onAdd={addToCart}
+            onResetFilters={resetFilters}
           />
         </div>
         <aside>

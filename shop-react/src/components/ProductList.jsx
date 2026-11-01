@@ -1,8 +1,17 @@
 import ProductCard from './ProductCard.jsx'
 
-function ProductList({ products, cartItems, onAdd }) {
+function ProductList({ products, cartItems, onAdd, onResetFilters }) {
   if (products.length === 0) {
-    return <p className="empty">Ничего не найдено. Измените условия поиска.</p>
+    return (
+      <div className="empty-results">
+        <p className="empty">Ничего не найдено. Измените условия поиска.</p>
+        {onResetFilters && (
+          <button type="button" className="secondary" onClick={onResetFilters}>
+            Сбросить фильтры
+          </button>
+        )}
+      </div>
+    )
   }
 
   return (
