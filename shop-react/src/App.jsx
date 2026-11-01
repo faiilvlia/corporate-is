@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useReducer } from 'react'
 import Header from './components/Header.jsx'
 import Filters from './components/Filters.jsx'
 import ProductList from './components/ProductList.jsx'
@@ -8,6 +8,7 @@ import Footer from './components/Footer.jsx'
 import { products } from './data/products.js'
 import { filterProducts, sortProducts } from './utils/catalog.js'
 import { formatPrice, calculateDiscount } from './utils/format.js'
+import { cartReducer } from './utils/cartReducer.js'
 import './App.css'
 
 const currentYear = new Date().getFullYear()
@@ -22,17 +23,18 @@ const initialFilters = {
 const categories = [...new Set(products.map((product) => product.category))].toSorted()
 
 function App() {
-  const [cartItems, setCartItems] = useState([])
+  const [catalog, setCatalog] = useState(products)
+  const [cartItems, dispatch] = useReducer(cartReducer, [])
   const [filters, setFilters] = useState(initialFilters)
   const [isCheckout, setIsCheckout] = useState(false)
   const [lastOrder, setLastOrder] = useState(null)
 
-  const inStockCount = products.filter((product) => product.stock > 0).length
-  const visibleProducts = sortProducts(filterProducts(products, filters), filters.sort)
+  const inStockCount = catalog.filter((product) => product.stock > 0).length
+  const visibleProducts = sortProducts(filterProducts(catalog, filters), filters.sort)
 
   const cartLines = cartItems.map((item) => ({
     ...item,
-    product: products.find((product) => product.id === item.productId),
+    product: catalog.find((product) => product.id === item.productId),
   }))
 
   const cartCount = cartLines.reduce(
@@ -42,7 +44,7 @@ function App() {
   const cartTotal = cartLines.reduce(
     (sum, line) =>
       sum +
-      line.product.price *
+      (line.product ? line.product.price : 0) *
         (typeof line.quantity === 'number' ? line.quantity : 0),
     0,
   )
@@ -56,56 +58,30 @@ function App() {
   }
 
   function addToCart(productId) {
-    setCartItems((prev) => {
-      const existing = prev.find((item) => item.productId === productId)
-      if (existing) {
-        const currentQty =
-          typeof existing.quantity === 'number' ? existing.quantity : 1
-        return prev.map((item) =>
-          item.productId === productId
-            ? { ...item, quantity: currentQty + 1 }
-            : item,
-        )
-      }
-      return [...prev, { productId, quantity: 1 }]
-    })
+    dispatch({ type: 'add', productId })
     setLastOrder(null)
   }
 
   function changeQuantity(productId, delta) {
-    setCartItems((prev) =>
-      prev
-        .map((item) => {
-          if (item.productId !== productId) return item
-          const currentQty =
-            typeof item.quantity === 'number' ? item.quantity : 1
-          return { ...item, quantity: currentQty + delta }
-        })
-        .filter((item) => item.quantity > 0),
-    )
+    dispatch({ type: 'changeQuantity', productId, delta })
   }
 
   function setQuantity(productId, quantity) {
-    setCartItems((prev) =>
-      prev.map((item) => {
-        if (item.productId !== productId) return item
-        if (quantity === '') {
-          return { ...item, quantity: '' }
-        }
-        const product = products.find((p) => p.id === productId)
-        const maxStock = product ? product.stock : 1
-        const clamped = Math.max(1, Math.min(quantity, maxStock))
-        return { ...item, quantity: clamped }
-      }),
-    )
+    const product = catalog.find((p) => p.id === productId)
+    dispatch({
+      type: 'setQuantity',
+      productId,
+      quantity,
+      maxStock: product ? product.stock : 1,
+    })
   }
 
   function removeFromCart(productId) {
-    setCartItems((prev) => prev.filter((item) => item.productId !== productId))
+    dispatch({ type: 'remove', productId })
   }
 
   function clearCart() {
-    setCartItems([])
+    dispatch({ type: 'clear' })
     setIsCheckout(false)
   }
 
@@ -126,8 +102,22 @@ function App() {
       total: finalTotal,
     }
     console.log('Новый заказ:', order)
+
+    // Задание 6: Списание остатков со склада при оформлении заказа
+    setCatalog((prevCatalog) =>
+      prevCatalog.map((product) => {
+        const purchased = cartLines.find((line) => line.productId === product.id)
+        if (purchased) {
+          const qty =
+            typeof purchased.quantity === 'number' ? purchased.quantity : 1
+          return { ...product, stock: Math.max(0, product.stock - qty) }
+        }
+        return product
+      }),
+    )
+
     setLastOrder(order)
-    setCartItems([])
+    dispatch({ type: 'clear' })
     setIsCheckout(false)
   }
 
@@ -135,7 +125,7 @@ function App() {
     <>
       <Header
         shopName="ТехноМаркет"
-        productCount={products.length}
+        productCount={catalog.length}
         inStockCount={inStockCount}
         cartCount={cartCount}
         cartTotal={cartTotal}
@@ -149,7 +139,7 @@ function App() {
             onReset={resetFilters}
           />
           <p className="catalog-count">
-            Найдено {visibleProducts.length} из {products.length}
+            Найдено {visibleProducts.length} из {catalog.length}
           </p>
           <ProductList
             products={visibleProducts}
@@ -163,7 +153,8 @@ function App() {
             <p className="success">
               Спасибо, {lastOrder.customer.name}! Заказ №{lastOrder.number} на{' '}
               {formatPrice(lastOrder.total)} оформлен.
-              {lastOrder.discount > 0 && ` (Скидка: ${formatPrice(lastOrder.discount)})`}
+              {lastOrder.discount > 0 &&
+                ` (Скидка: ${formatPrice(lastOrder.discount)})`}
             </p>
           )}
           {isCheckout && cartLines.length > 0 ? (
