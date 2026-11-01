@@ -197,6 +197,38 @@ button.link {
   gap: 8px;
 }
 
+.checkout label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 12px;
+}
+
+.checkout label.inline {
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+}
+
+.checkout fieldset {
+  margin: 0 0 12px;
+  border: 1px solid #d0d7de;
+  border-radius: 6px;
+}
+
+.error {
+  margin: -8px 0 12px;
+  color: #cf222e;
+  font-size: 14px;
+}
+
+.success {
+  padding: 12px;
+  background: #dafbe1;
+  border: 1px solid #1a7f37;
+  border-radius: 8px;
+}
+
 .empty {
   color: #656d76;
 }

@@ -3,9 +3,11 @@ import Header from './components/Header.jsx'
 import Filters from './components/Filters.jsx'
 import ProductList from './components/ProductList.jsx'
 import Cart from './components/Cart.jsx'
+import CheckoutForm from './components/CheckoutForm.jsx'
 import Footer from './components/Footer.jsx'
 import { products } from './data/products.js'
 import { filterProducts, sortProducts } from './utils/catalog.js'
+import { formatPrice } from './utils/format.js'
 import './App.css'
 
 const currentYear = new Date().getFullYear()
@@ -22,6 +24,8 @@ const categories = [...new Set(products.map((product) => product.category))].toS
 function App() {
   const [cartItems, setCartItems] = useState([])
   const [filters, setFilters] = useState(initialFilters)
+  const [isCheckout, setIsCheckout] = useState(false)
+  const [lastOrder, setLastOrder] = useState(null)
 
   const inStockCount = products.filter((product) => product.stock > 0).length
   const visibleProducts = sortProducts(filterProducts(products, filters), filters.sort)
@@ -53,6 +57,7 @@ function App() {
       }
       return [...prev, { productId, quantity: 1 }]
     })
+    setLastOrder(null)
   }
 
   function changeQuantity(productId, delta) {
@@ -73,6 +78,25 @@ function App() {
 
   function clearCart() {
     setCartItems([])
+    setIsCheckout(false)
+  }
+
+  function placeOrder(customer) {
+    const order = {
+      number: Date.now() % 100000,
+      customer,
+      items: cartLines.map((line) => ({
+        productId: line.productId,
+        title: line.product.title,
+        price: line.product.price,
+        quantity: line.quantity,
+      })),
+      total: cartTotal,
+    }
+    console.log('Новый заказ:', order)
+    setLastOrder(order)
+    setCartItems([])
+    setIsCheckout(false)
   }
 
   return (
@@ -99,14 +123,28 @@ function App() {
           />
         </div>
         <aside>
-          <Cart
-            lines={cartLines}
-            total={cartTotal}
-            onChangeQuantity={changeQuantity}
-            onRemove={removeFromCart}
-            onClear={clearCart}
-            onCheckout={() => console.log('Оформление заказа сделаем в части 7')}
-          />
+          {lastOrder && (
+            <p className="success">
+              Спасибо, {lastOrder.customer.name}! Заказ №{lastOrder.number} на{' '}
+              {formatPrice(lastOrder.total)} оформлен.
+            </p>
+          )}
+          {isCheckout && cartLines.length > 0 ? (
+            <CheckoutForm
+              total={cartTotal}
+              onSubmit={placeOrder}
+              onCancel={() => setIsCheckout(false)}
+            />
+          ) : (
+            <Cart
+              lines={cartLines}
+              total={cartTotal}
+              onChangeQuantity={changeQuantity}
+              onRemove={removeFromCart}
+              onClear={clearCart}
+              onCheckout={() => setIsCheckout(true)}
+            />
+          )}
         </aside>
       </main>
       <Footer shopName="ТехноМаркет" year={currentYear} />
