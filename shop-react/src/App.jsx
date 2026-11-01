@@ -1,17 +1,30 @@
 import { useState } from 'react'
 import Header from './components/Header.jsx'
+import Filters from './components/Filters.jsx'
 import ProductList from './components/ProductList.jsx'
 import Cart from './components/Cart.jsx'
 import Footer from './components/Footer.jsx'
 import { products } from './data/products.js'
+import { filterProducts, sortProducts } from './utils/catalog.js'
 import './App.css'
 
 const currentYear = new Date().getFullYear()
 
+const initialFilters = {
+  query: '',
+  category: '',
+  onlyInStock: false,
+  sort: 'default',
+}
+
+const categories = [...new Set(products.map((product) => product.category))].toSorted()
+
 function App() {
   const [cartItems, setCartItems] = useState([])
+  const [filters, setFilters] = useState(initialFilters)
 
   const inStockCount = products.filter((product) => product.stock > 0).length
+  const visibleProducts = sortProducts(filterProducts(products, filters), filters.sort)
 
   const cartLines = cartItems.map((item) => ({
     ...item,
@@ -23,6 +36,10 @@ function App() {
     (sum, line) => sum + line.product.price * line.quantity,
     0,
   )
+
+  function updateFilter(name, value) {
+    setFilters((prev) => ({ ...prev, [name]: value }))
+  }
 
   function addToCart(productId) {
     setCartItems((prev) => {
@@ -69,7 +86,17 @@ function App() {
       />
       <main className="layout">
         <div>
-          <ProductList products={products} cartItems={cartItems} onAdd={addToCart} />
+          <Filters
+            filters={filters}
+            categories={categories}
+            onChange={updateFilter}
+            onReset={() => setFilters(initialFilters)}
+          />
+          <ProductList
+            products={visibleProducts}
+            cartItems={cartItems}
+            onAdd={addToCart}
+          />
         </div>
         <aside>
           <Cart
