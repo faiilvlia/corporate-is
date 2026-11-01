@@ -1,13 +1,6 @@
-import { useState } from 'react'
+import { formatPrice } from '../utils/format.js'
 
-const priceFormat = new Intl.NumberFormat('ru-RU', {
-  style: 'currency',
-  currency: 'RUB',
-  maximumFractionDigits: 0,
-})
-
-function ProductCard({ product }) {
-  const [inCart, setInCart] = useState(0)
+function ProductCard({ product, inCart, onAdd }) {
   const available = product.stock - inCart
   const discount = product.oldPrice
     ? Math.round(((product.oldPrice - product.price) / product.oldPrice) * 100)
@@ -18,10 +11,10 @@ function ProductCard({ product }) {
       <span className="card-category">{product.category}</span>
       <h2>{product.title}</h2>
       <p className="card-price">
-        {priceFormat.format(product.price)}
+        {formatPrice(product.price)}
         {product.oldPrice && (
           <>
-            <s className="card-old-price">{priceFormat.format(product.oldPrice)}</s>
+            <s className="card-old-price">{formatPrice(product.oldPrice)}</s>
             <span className="card-badge">−{discount}%</span>
           </>
         )}
@@ -34,7 +27,7 @@ function ProductCard({ product }) {
       <button
         type="button"
         disabled={available === 0}
-        onClick={() => setInCart(inCart + 1)}
+        onClick={() => onAdd(product.id)}
       >
         В корзину
       </button>
