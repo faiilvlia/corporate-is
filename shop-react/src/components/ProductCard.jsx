@@ -9,12 +9,23 @@ const priceFormat = new Intl.NumberFormat('ru-RU', {
 function ProductCard({ product }) {
   const [inCart, setInCart] = useState(0)
   const available = product.stock - inCart
+  const discount = product.oldPrice
+    ? Math.round(((product.oldPrice - product.price) / product.oldPrice) * 100)
+    : null
 
   return (
     <article className="card">
       <span className="card-category">{product.category}</span>
       <h2>{product.title}</h2>
-      <p className="card-price">{priceFormat.format(product.price)}</p>
+      <p className="card-price">
+        {priceFormat.format(product.price)}
+        {product.oldPrice && (
+          <>
+            <s className="card-old-price">{priceFormat.format(product.oldPrice)}</s>
+            <span className="card-badge">−{discount}%</span>
+          </>
+        )}
+      </p>
       {product.stock > 0 ? (
         <p className="card-stock">Осталось: {available} шт.</p>
       ) : (

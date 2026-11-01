@@ -43,7 +43,26 @@ main {
 }
 
 .card-price {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px;
   font-size: 22px;
+  font-weight: bold;
+}
+
+.card-old-price {
+  color: #656d76;
+  font-size: 16px;
+  font-weight: normal;
+}
+
+.card-badge {
+  padding: 2px 6px;
+  background: #cf222e;
+  color: white;
+  border-radius: 4px;
+  font-size: 12px;
   font-weight: bold;
 }
 
