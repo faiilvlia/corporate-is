@@ -37,6 +37,8 @@ shop-react/node_modules/
 shop-react/dist/
 shop-autoparts/node_modules/
 shop-autoparts/dist/
+shop-autoparts-luxury/node_modules/
+shop-autoparts-luxury/dist/
 
 # Obsolete
 listings/
