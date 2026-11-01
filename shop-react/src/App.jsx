@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import Header from './components/Header.jsx'
 import ProductList from './components/ProductList.jsx'
+import Cart from './components/Cart.jsx'
 import Footer from './components/Footer.jsx'
 import { products } from './data/products.js'
 import './App.css'
@@ -37,6 +38,26 @@ function App() {
     })
   }
 
+  function changeQuantity(productId, delta) {
+    setCartItems((prev) =>
+      prev
+        .map((item) =>
+          item.productId === productId
+            ? { ...item, quantity: item.quantity + delta }
+            : item,
+        )
+        .filter((item) => item.quantity > 0),
+    )
+  }
+
+  function removeFromCart(productId) {
+    setCartItems((prev) => prev.filter((item) => item.productId !== productId))
+  }
+
+  function clearCart() {
+    setCartItems([])
+  }
+
   return (
     <>
       <Header
@@ -46,8 +67,20 @@ function App() {
         cartCount={cartCount}
         cartTotal={cartTotal}
       />
-      <main>
-        <ProductList products={products} cartItems={cartItems} onAdd={addToCart} />
+      <main className="layout">
+        <div>
+          <ProductList products={products} cartItems={cartItems} onAdd={addToCart} />
+        </div>
+        <aside>
+          <Cart
+            lines={cartLines}
+            total={cartTotal}
+            onChangeQuantity={changeQuantity}
+            onRemove={removeFromCart}
+            onClear={clearCart}
+            onCheckout={() => console.log('Оформление заказа сделаем в части 7')}
+          />
+        </aside>
       </main>
       <Footer shopName="ТехноМаркет" year={currentYear} />
     </>
