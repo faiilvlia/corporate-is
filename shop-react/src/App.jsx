@@ -8,6 +8,7 @@ const currentYear = new Date().getFullYear()
 
 function App() {
   const inStockCount = products.filter((product) => product.stock > 0).length
+  const sortedProducts = products.toSorted((a, b) => a.price - b.price)
 
   return (
     <>
@@ -17,7 +18,7 @@ function App() {
         inStockCount={inStockCount}
       />
       <main>
-        <ProductList products={products} />
+        <ProductList products={sortedProducts} />
       </main>
       <Footer shopName="ТехноМаркет" year={currentYear} />
     </>
