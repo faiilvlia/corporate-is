@@ -1,0 +1,34 @@
+import ProductCard from './ProductCard.jsx'
+
+function ProductList({ products, cartItems, onAdd, onResetFilters }) {
+  if (products.length === 0) {
+    return (
+      <div className="empty-results">
+        <p className="empty">По заданным фильтрам автозапчастей не найдено.</p>
+        {onResetFilters && (
+          <button type="button" className="btn-secondary" onClick={onResetFilters}>
+            Сбросить параметры поиска
+          </button>
+        )}
+      </div>
+    )
+  }
+
+  return (
+    <section className="product-list">
+      {products.map((product) => {
+        const item = cartItems.find((item) => item.productId === product.id)
+        return (
+          <ProductCard
+            key={product.id}
+            product={product}
+            inCart={item ? item.quantity : 0}
+            onAdd={onAdd}
+          />
+        )
+      })}
+    </section>
+  )
+}
+
+export default ProductList

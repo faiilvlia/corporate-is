@@ -35,6 +35,8 @@ desktop.ini
 node_modules/
 shop-react/node_modules/
 shop-react/dist/
+shop-autoparts/node_modules/
+shop-autoparts/dist/
 
 # Obsolete
 listings/
