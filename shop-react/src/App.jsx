@@ -7,9 +7,15 @@ import './App.css'
 const currentYear = new Date().getFullYear()
 
 function App() {
+  const inStockCount = products.filter((product) => product.stock > 0).length
+
   return (
     <>
-      <Header shopName="ТехноМаркет" productCount={products.length} />
+      <Header
+        shopName="ТехноМаркет"
+        productCount={products.length}
+        inStockCount={inStockCount}
+      />
       <main>
         <ProductList products={products} />
       </main>
