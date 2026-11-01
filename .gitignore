@@ -28,6 +28,16 @@ media/
 # OS
 .DS_Store
 Thumbs.db
+Desktop.ini
+desktop.ini
+
+# Frontend / Node
+node_modules/
+shop-react/node_modules/
+shop-react/dist/
+
+# Obsolete
+listings/
 
 # Agent skills cache
 .agents/
