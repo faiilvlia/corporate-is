@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <rect width="64" height="64" rx="14" fill="#0b0b0b"/>
+  <polygon points="32,8 54,20 44,52 20,52 10,20" stroke="#a40b40" stroke-width="2.5" fill="none"/>
+  <polygon points="32,8 20,20 32,38 44,20" stroke="#ffffff" stroke-width="1.2" fill="#a40b40" fill-opacity="0.35"/>
+  <text x="32" y="49" font-family="'Cormorant Garamond', Georgia, serif" font-size="16" font-style="italic" font-weight="700" fill="#ffffff" text-anchor="middle">V</text>
+</svg>

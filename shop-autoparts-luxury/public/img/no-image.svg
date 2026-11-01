@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300" fill="none">
+  <rect width="400" height="300" fill="#F2F3F2"/>
+  <circle cx="200" cy="135" r="76" stroke="#141414" stroke-opacity="0.16" stroke-dasharray="3 4"/>
+  <circle cx="200" cy="135" r="52" stroke="#141414" stroke-opacity="0.28"/>
+  <line x1="110" y1="135" x2="290" y2="135" stroke="#141414" stroke-opacity="0.15"/>
+  <line x1="200" y1="45" x2="200" y2="225" stroke="#141414" stroke-opacity="0.15"/>
+  <rect x="172" y="107" width="56" height="56" transform="rotate(45 200 135)" stroke="#141414" stroke-opacity="0.45" stroke-width="1.2"/>
+  <rect x="176" y="111" width="48" height="48" stroke="#44688B" stroke-opacity="0.65" stroke-width="1.2" fill="#44688B" fill-opacity="0.08"/>
+  <text x="200" y="252" font-family="Montserrat, system-ui, sans-serif" font-size="14" letter-spacing="3" fill="#6E6E6E" text-anchor="middle">ФОТО УТОЧНЯЕТСЯ</text>
+</svg>
