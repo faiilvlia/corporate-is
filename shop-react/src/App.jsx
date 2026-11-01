@@ -35,9 +35,15 @@ function App() {
     product: products.find((product) => product.id === item.productId),
   }))
 
-  const cartCount = cartLines.reduce((sum, line) => sum + line.quantity, 0)
+  const cartCount = cartLines.reduce(
+    (sum, line) => sum + (typeof line.quantity === 'number' ? line.quantity : 0),
+    0,
+  )
   const cartTotal = cartLines.reduce(
-    (sum, line) => sum + line.product.price * line.quantity,
+    (sum, line) =>
+      sum +
+      line.product.price *
+        (typeof line.quantity === 'number' ? line.quantity : 0),
     0,
   )
 
@@ -49,9 +55,11 @@ function App() {
     setCartItems((prev) => {
       const existing = prev.find((item) => item.productId === productId)
       if (existing) {
+        const currentQty =
+          typeof existing.quantity === 'number' ? existing.quantity : 1
         return prev.map((item) =>
           item.productId === productId
-            ? { ...item, quantity: item.quantity + 1 }
+            ? { ...item, quantity: currentQty + 1 }
             : item,
         )
       }
@@ -63,12 +71,28 @@ function App() {
   function changeQuantity(productId, delta) {
     setCartItems((prev) =>
       prev
-        .map((item) =>
-          item.productId === productId
-            ? { ...item, quantity: item.quantity + delta }
-            : item,
-        )
+        .map((item) => {
+          if (item.productId !== productId) return item
+          const currentQty =
+            typeof item.quantity === 'number' ? item.quantity : 1
+          return { ...item, quantity: currentQty + delta }
+        })
         .filter((item) => item.quantity > 0),
+    )
+  }
+
+  function setQuantity(productId, quantity) {
+    setCartItems((prev) =>
+      prev.map((item) => {
+        if (item.productId !== productId) return item
+        if (quantity === '') {
+          return { ...item, quantity: '' }
+        }
+        const product = products.find((p) => p.id === productId)
+        const maxStock = product ? product.stock : 1
+        const clamped = Math.max(1, Math.min(quantity, maxStock))
+        return { ...item, quantity: clamped }
+      }),
     )
   }
 
@@ -89,7 +113,7 @@ function App() {
         productId: line.productId,
         title: line.product.title,
         price: line.product.price,
-        quantity: line.quantity,
+        quantity: typeof line.quantity === 'number' ? line.quantity : 1,
       })),
       total: cartTotal,
     }
@@ -140,6 +164,7 @@ function App() {
               lines={cartLines}
               total={cartTotal}
               onChangeQuantity={changeQuantity}
+              onSetQuantity={setQuantity}
               onRemove={removeFromCart}
               onClear={clearCart}
               onCheckout={() => setIsCheckout(true)}
