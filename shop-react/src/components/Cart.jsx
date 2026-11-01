@@ -1,4 +1,4 @@
-import { formatPrice } from '../utils/format.js'
+import { formatPrice, FREE_DELIVERY_FROM } from '../utils/format.js'
 
 function Cart({
   lines,
@@ -17,6 +17,8 @@ function Cart({
       </section>
     )
   }
+
+  const remainingForFree = FREE_DELIVERY_FROM - total
 
   return (
     <section className="cart">
@@ -83,6 +85,11 @@ function Cart({
         })}
       </ul>
       <p className="cart-total">Итого: {formatPrice(total)}</p>
+      <p className={`delivery-info ${remainingForFree <= 0 ? 'free' : ''}`}>
+        {remainingForFree <= 0
+          ? 'Доставка бесплатно'
+          : `До бесплатной доставки осталось ${formatPrice(remainingForFree)}`}
+      </p>
       <div className="cart-actions">
         <button type="button" onClick={onCheckout}>
           Оформить заказ

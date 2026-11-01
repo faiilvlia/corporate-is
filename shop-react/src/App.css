@@ -204,6 +204,17 @@ button.link {
   font-weight: bold;
 }
 
+.delivery-info {
+  margin: -8px 0 16px;
+  font-size: 14px;
+  color: #656d76;
+}
+
+.delivery-info.free {
+  color: #1a7f37;
+  font-weight: bold;
+}
+
 .cart-actions {
   display: flex;
   gap: 8px;
