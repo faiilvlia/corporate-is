@@ -204,6 +204,12 @@ button.link {
   font-weight: bold;
 }
 
+.cart-discount {
+  margin: 0 0 4px;
+  color: #1a7f37;
+  font-weight: bold;
+}
+
 .delivery-info {
   margin: -8px 0 16px;
   font-size: 14px;

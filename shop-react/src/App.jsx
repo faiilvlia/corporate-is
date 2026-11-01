@@ -7,7 +7,7 @@ import CheckoutForm from './components/CheckoutForm.jsx'
 import Footer from './components/Footer.jsx'
 import { products } from './data/products.js'
 import { filterProducts, sortProducts } from './utils/catalog.js'
-import { formatPrice } from './utils/format.js'
+import { formatPrice, calculateDiscount } from './utils/format.js'
 import './App.css'
 
 const currentYear = new Date().getFullYear()
@@ -110,6 +110,9 @@ function App() {
   }
 
   function placeOrder(customer) {
+    const discount = calculateDiscount(cartTotal, customer.promoCode)
+    const finalTotal = cartTotal - discount
+
     const order = {
       number: Date.now() % 100000,
       customer,
@@ -119,7 +122,8 @@ function App() {
         price: line.product.price,
         quantity: typeof line.quantity === 'number' ? line.quantity : 1,
       })),
-      total: cartTotal,
+      discount,
+      total: finalTotal,
     }
     console.log('Новый заказ:', order)
     setLastOrder(order)
@@ -159,6 +163,7 @@ function App() {
             <p className="success">
               Спасибо, {lastOrder.customer.name}! Заказ №{lastOrder.number} на{' '}
               {formatPrice(lastOrder.total)} оформлен.
+              {lastOrder.discount > 0 && ` (Скидка: ${formatPrice(lastOrder.discount)})`}
             </p>
           )}
           {isCheckout && cartLines.length > 0 ? (

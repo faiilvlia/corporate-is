@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { formatPrice } from '../utils/format.js'
+import { formatPrice, calculateDiscount } from '../utils/format.js'
 
 const initialForm = {
   name: '',
@@ -8,6 +8,7 @@ const initialForm = {
   delivery: 'pickup',
   address: '',
   comment: '',
+  promoCode: '',
   agree: false,
 }
 
@@ -25,6 +26,12 @@ function validate(form) {
   if (form.delivery === 'courier' && form.address.trim() === '') {
     errors.address = 'Укажите адрес доставки'
   }
+  if (
+    form.promoCode.trim() !== '' &&
+    form.promoCode.trim().toUpperCase() !== 'STUDENT10'
+  ) {
+    errors.promoCode = 'Неверный промокод (попробуйте STUDENT10)'
+  }
   if (!form.agree) {
     errors.agree = 'Нужно согласие на обработку персональных данных'
   }
@@ -37,6 +44,9 @@ function CheckoutForm({ total, onSubmit, onCancel }) {
 
   const errors = validate(form)
   const hasErrors = Object.keys(errors).length > 0
+
+  const discount = calculateDiscount(total, form.promoCode)
+  const finalTotal = total - discount
 
   function handleChange(e) {
     const { name, value, type, checked } = e.target
@@ -122,6 +132,17 @@ function CheckoutForm({ total, onSubmit, onCancel }) {
         <textarea name="comment" rows={3} value={form.comment} onChange={handleChange} />
       </label>
 
+      <label>
+        Промокод
+        <input
+          name="promoCode"
+          placeholder="Например, STUDENT10"
+          value={form.promoCode}
+          onChange={handleChange}
+        />
+      </label>
+      {showError('promoCode')}
+
       <label className="inline">
         <input
           type="checkbox"
@@ -133,7 +154,10 @@ function CheckoutForm({ total, onSubmit, onCancel }) {
       </label>
       {showError('agree')}
 
-      <p className="cart-total">К оплате: {formatPrice(total)}</p>
+      {discount > 0 && (
+        <p className="cart-discount">Скидка: {formatPrice(discount)}</p>
+      )}
+      <p className="cart-total">К оплате: {formatPrice(finalTotal)}</p>
 
       <div className="cart-actions">
         <button type="submit" disabled={submitted && hasErrors}>
